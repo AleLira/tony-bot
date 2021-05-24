@@ -11,6 +11,7 @@ Just a simple Discord bot to play audios on voice channels.
 - Send audios for specific voice channel
 - Clear messages related to bot
 - Add new audios easily without changing code or configuration files
+- Auto delete messages
 
 # Getting Started
 
@@ -156,3 +157,13 @@ Simple Example:
 ```
 
 > Volume should be between 0 and 200 (Default is **100**)
+
+#### Volume
+
+Mark a message to auto delete with **-d** option.
+After playing the audio, the trigger message will be automatically deleted
+Simple Example:
+
+```
+-t aopa -c mesa de mp -d
+```

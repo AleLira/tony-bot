@@ -51,8 +51,12 @@ class HelpCommand {
         value: "Play audio in specific volume from 0 to 200 (default is 100)",
       },
       {
+        name: "-d",
+        value: "Auto Delete trigger message after send audio",
+      },
+      {
         name: "Example:",
-        value: "-t oi -c Mesa de PULSE -v 150",
+        value: "-t oi -c Mesa de PULSE -v 150 -d",
       },
     ];
     const content = `Hey, <@!${member}>, here are all available commands:`;
