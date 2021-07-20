@@ -1,8 +1,7 @@
 import { readdirSync } from "fs";
 import { watch } from "chokidar";
 import * as helpCommands from "./help-commands";
-
-const audiosDir = process.env.CONFIG_AUDIOS_DIR || "audios";
+import { audiosDir } from "../config";
 
 const helpCommandsList = Object.keys(helpCommands);
 

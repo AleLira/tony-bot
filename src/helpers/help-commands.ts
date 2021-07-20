@@ -1,4 +1,5 @@
 import { EmbedFieldData, GuildMember, TextChannel } from "discord.js";
+import { commandTrigger } from "../config";
 import { audio, getTriggerRegex, sendMessage } from ".";
 
 type HelpCommandOpts = {
@@ -13,7 +14,7 @@ type RunHelpCommandOpts = HelpCommandOpts & {
 class HelpCommand {
   list({ channel, member }: HelpCommandOpts) {
     const audios = audio.list();
-    const content = `Hey, <@!${member}>, here are all available audios: \n \`\`\`${audios.join(
+    const content = `Hey, <@!${member}>, here are all ${audios.length} available audios: \n \`\`\`\n${audios.join(
       "\n"
     )}\`\`\``;
     const msgOpts = {
@@ -27,15 +28,15 @@ class HelpCommand {
   help({ channel, member }: HelpCommandOpts) {
     const fields: EmbedFieldData[] = [
       {
-        name: "-t help",
+        name: `-${commandTrigger} help`,
         value: "List all commands",
       },
       {
-        name: "-t list",
+        name: `-${commandTrigger} list`,
         value: "List all available audios",
       },
       {
-        name: "-t <audioName> <options>",
+        name: `-${commandTrigger} <audioName> <options>`,
         value: "Send an audio",
       },
       {
@@ -56,7 +57,7 @@ class HelpCommand {
       },
       {
         name: "Example:",
-        value: "-t oi -c Mesa de PULSE -v 150 -d",
+        value: `-${commandTrigger} oi -c Mesa de PULSE -v 150 -d`,
       },
     ];
     const content = `Hey, <@!${member}>, here are all available commands:`;

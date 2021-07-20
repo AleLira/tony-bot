@@ -1,5 +1,5 @@
-export default function getTriggerRegex() {
-  const commandTrigger = process.env.CONFIG_TRIGGER_CHAR || "t";
+import { commandTrigger } from "../config";
 
+export default function getTriggerRegex() {
   return new RegExp(`^\-${commandTrigger}\\s`);
 }

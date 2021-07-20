@@ -6,17 +6,15 @@ import {
   parseArguments,
   sendMessage,
   locker,
+  getTriggerRegex,
 } from "./helpers";
 import { isLocked, lock, unlock } from "./helpers/locker";
-
-const commandTrigger = process.env.CONFIG_TRIGGER_CHAR || "t";
-
-const triggerRegex = new RegExp(`^\-${commandTrigger}\\s`);
+import { commandTrigger, discordToken } from "./config";
 
 const handleMessage = async (message: Message) => {
   const { content, member, guild, channel: messageChannel } = message;
 
-  if (!content.match(triggerRegex)) {
+  if (!content.match(getTriggerRegex())) {
     return;
   }
 
@@ -52,7 +50,7 @@ const handleMessage = async (message: Message) => {
   if (!audio || !audioPath) {
     return sendMessage.error({
       channel: messageChannel as TextChannel,
-      content: `Invalid audio! Check list with command\n \`\`\`-t list\`\`\``,
+      content: `Invalid audio! Check list with command\n \`\`\`-${commandTrigger} list\`\`\``,
     });
   }
 
@@ -102,7 +100,7 @@ async function main() {
   const bot = new Client();
   bot.on("message", handleMessage);
 
-  await bot.login(process.env.DISCORD_TOKEN);
+  await bot.login(discordToken);
 
   console.log("\x1b[36m", "Bot is ready! Waiting for commands...", "\x1b[0m");
 }
