@@ -102,6 +102,8 @@ async function main() {
 
   await bot.login(discordToken);
 
+  await bot.user.setPresence({activity: {name:  `-${commandTrigger} commands`, type: "LISTENING"}});
+
   console.log("\x1b[36m", "Bot is ready! Waiting for commands...", "\x1b[0m");
 }
 
