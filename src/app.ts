@@ -80,6 +80,7 @@ const handleMessage = async (message: Message) => {
   }
 
   try {
+    console.log(`Playing ${audio} on ${guild.name}/${botChannel.name} by ${member.displayName}`);
     lock(guild);
     const connection = await botChannel.join();
 
