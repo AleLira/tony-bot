@@ -11,55 +11,58 @@ Just a simple Discord bot to play audios on voice channels.
 - Send audios for specific voice channel
 - Clear messages related to bot
 - Add new audios easily without changing code or configuration files
+- Audio Upload direct from Discord
+- Lock bot to avoid use for some time
 - Auto delete messages
 
 # Getting Started
 
-StackEdit stores your files in your browser, which means all your files are automatically saved locally and are accessible **offline!**
-
 ## Environment Variables
 
-- **DISCORD_TOKEN:** Your bot token created at [Discord Developers page](https://discord.com/developers/applications)
-- **CONFIG_AUDIOS_DIR:** Directory with audio files, relative to application root dir (defaut is "_audios_")
-- **CONFIG_TRIGGER_CHAR:** Character used as bot trigger command after "_-_" symbol (default is "_t_")
-- **CONFIG_AUTO_UNLOCK_TIME:** Time in seconds to automatically unlock the bot on a server if an error occurs while playing audio (default is "_3_")
+### App
+- **APP_BOT_NAME:** Your bot name. Will appear in some responses and help messages.
 
-## Starting app
+### Discord
+- **DISCORD_TOKEN:** Your bot token created at [Discord Developers page](https://discord.com/developers/applications)
+- **DISCORD_BOT_OWNER_ID:** Your Discord User ID. Will be used to allow you to run Admin Only commands (**upload** and **sleep**)
+
+### Config
+- **CONFIG_TRIGGER_CHAR:** Character used as bot trigger command after "**-**" symbol (default is "**t**")
+- **CONFIG_AUTO_UNLOCK_TIME_SECONDS:** Time in seconds to automatically unlock the bot on a server if an error occurs while playing audio (default is "**3**")
+
+### Debug
+
+As used by [Debug Package](https://github.com/debug-js/debug#environment-variables)
+
+## Using app
 
 ### Starting Typescript
 
-With nodemon:
-
 ```bash
-yarn nodemon src/app.ts
+yarn start:dev
 ```
 
-With ts-node:
+> will reload app at every file save
 
-```bash
-yarn ts-node src/app.ts
-```
-
-### Transpile to JS:
+### Build TS Code:
 
 ```bash
 yarn build
 ```
 
-Transpiled code will be available at `dist` directory
+JS built code will be available at `dist` directory
 
-### Starting transpiled app
+### Starting built app
+
+With yarn:
+```bash
+yarn start
+```
 
 With node:
 
 ```bash
 node dist/app.js
-```
-
-With nodemon:
-
-```bash
-yarn nodemon dist/app.js
 ```
 
 With PM2:
@@ -68,24 +71,39 @@ With PM2:
 pm2 start dist/app.js --name tony-bot
 ```
 
+### Lint
+
+Lint check:
+```bash
+yarn lint
+```
+
+Lint check & fix:
+```bash
+yarn lint:fix
+```
+
 # Managing the application
 
 ## Adding, updating and removing audios
 
-just add, rename or remove audios directly in your _audios_ directory.
+just add, rename or remove audios directly in your **audios** directory and restart the app.
 
-The app will automatically update the available audios list.
+All audios under **audios/originals** directory will be available on all Discord Servers your bot is on
+
+Audios under **audios/{SERVER_ID}** will be available only on the specified server
 
 ## Help Commands
 
 ### help
 
-You'll receive this list with all available commands
+Send `-t help` to see a list with all commands.
+
+Send `-t help <command-name>` to see help info about an specific command, including aliases and params details.
 
 Example:
 
 ```
--t help
 ```
 
 ### ping
@@ -120,9 +138,9 @@ Example:
 -t clear
 ```
 
-## Send Audios
+## Play Audios
 
-Audios can be sent with the command:
+Audios can be played with the command:
 
 ```
 <trigger> <audio-name> <options>
@@ -142,7 +160,7 @@ You can send the audio to a specific channel with **-c** option
 Simple Example:
 
 ```
--t aopa -c mesa de pulse
+-t aopa -c General
 ```
 
 > Channel option is case-insensitive
@@ -158,12 +176,57 @@ Simple Example:
 
 > Volume should be between 0 and 200 (Default is **100**)
 
-#### Volume
+#### Auto Delete
 
 Mark a message to auto delete with **-d** option.
 After playing the audio, the trigger message will be automatically deleted
 Simple Example:
 
 ```
--t aopa -c mesa de mp -d
+-t aopa -d
 ```
+
+## Upload new Audios from Discord
+
+> Only bot owner and Server Admins can use this command.
+
+Just send a message with an attached audio file and the **upload** command
+
+Simple Example:
+
+```
+-t upload
+```
+
+Audio name will be the file name.
+
+You can also send the audio name as a param in the message. Example:
+
+```
+-t upload audio name here
+```
+
+In both cases, all uppercase letters will turn to lowercase, spaces and special chars will be removed and accented characters will be replaced by their unaccented versions.
+
+Example:
+
+`Sem Condições @#!` will turn to `semcondicoes`
+
+On first upload, the Server specific audios directory will be automatically created under `audios` directory.
+
+## Put the bot to sleep
+
+> Only bot owner and Server Admins can use this command.
+
+Lock the bot for the specified time with `sleep` command (Default is 15 seconds).
+
+Example:
+```
+-t sleep <time>
+```
+
+Allowed sleeping time is between 1 second and 5 minutes. Time param format is:
+
+`11` or `11s` for seconds (between 1 and 300)
+
+`1m` for minutes (between and 5)

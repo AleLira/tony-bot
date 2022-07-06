@@ -1,111 +1,67 @@
-import "dotenv/config";
-import { Client, Message, VoiceChannel, TextChannel } from "discord.js";
-import {
-  audio as audioHelper,
-  helpCommands,
-  parseArguments,
-  sendMessage,
-  locker,
-  getTriggerRegex,
-} from "./helpers";
-import { isLocked, lock, unlock } from "./helpers/locker";
-import { commandTrigger, discordToken } from "./config";
+import 'dotenv/config';
+import { botName, commandTrigger, discordToken } from '@config';
+import AudioManager from '@lib/AudioManager';
+import CommandManager from '@lib/CommandManager';
+import { isCommand } from '@lib/helpers';
+import Debug from 'debug';
+import { Client, Intents, Message } from 'discord.js';
+import stringArgv from 'string-argv';
 
-const handleMessage = async (message: Message) => {
-  const { content, member, guild, channel: messageChannel } = message;
+const debug = Debug(`${botName}:main:`);
 
-  if (!content.match(getTriggerRegex())) {
-    return;
-  }
-
-  const { audio, channel, volume, autoDelete } = parseArguments(
-    content,
-    commandTrigger
+async function main(): Promise<void> {
+  debug('Starting Bot!');
+  const intents = new Intents();
+  intents.add(
+    Intents.FLAGS.GUILDS,
+    Intents.FLAGS.GUILD_VOICE_STATES,
+    Intents.FLAGS.GUILD_MESSAGES,
   );
+  const bot = new Client({
+    intents: intents,
+  });
 
-  const helpCommandOptions = {
-    channel: messageChannel as TextChannel,
-    command: audio,
-    member,
-  };
+  debug('Loading Commands');
+  const manager = CommandManager.getInstance();
+  await manager.load();
 
-  if (autoDelete) {
-    message.delete();
-  }
+  debug('Loading Audios');
+  const audioManager = AudioManager.getInstance();
+  audioManager.load();
 
-  if (helpCommands.runHelpCommand(helpCommandOptions)) {
-    return;
-  }
+  debug('Authenticating with Discord');
+  bot.login(discordToken);
 
-  if (isLocked(guild)) {
-    const content = `Sorry, <@!${member}>, I'm busy now, just wait a second and try again`;
-    return sendMessage.info({
-      channel: messageChannel as TextChannel,
-      content,
+  bot.on('ready', () => {
+    bot.user?.setPresence({
+      activities: [{ name: `-${commandTrigger} <command>`, type: 'LISTENING' }],
     });
-  }
 
-  const audioPath = audioHelper.path(audio);
+    // eslint-disable-next-line no-console
+    debug(`Ready! Logged in as ${bot.user.tag}`);
+  });
 
-  if (!audio || !audioPath) {
-    return sendMessage.error({
-      channel: messageChannel as TextChannel,
-      content: `Invalid audio! Check list with command\n \`\`\`-${commandTrigger} list\`\`\``,
-    });
-  }
+  bot.on('messageCreate', (message: Message) => {
+    const { content, author } = message;
 
-  let botChannel = member.voice.channel;
+    if (author.bot) return;
 
-  if (channel) {
-    const channelSearch = guild.channels.cache.find(
-      ({ name, type }) =>
-        name.toLowerCase() === channel.toLowerCase() && type === "voice"
-    );
+    const argv = stringArgv(content);
+    const firstMessageFragment = argv.shift();
 
-    if (!channelSearch) {
-      return sendMessage.error({
-        channel: messageChannel as TextChannel,
-        content: `Channel '${channel}' not found or not a voice channel`,
-      });
+    if (!isCommand(firstMessageFragment)) {
+      return;
     }
 
-    botChannel = channelSearch as VoiceChannel;
-  }
+    let command = argv.shift();
 
-  if (!botChannel) {
-    return sendMessage.error({
-      channel: messageChannel as TextChannel,
-      content: "User is not in a voice channel",
-    });
-  }
+    if (!manager.exists(command)) {
+      argv.unshift(command);
+      command = 'audio';
+    }
 
-  try {
-    console.log(`Playing ${audio} on ${guild.name}/${botChannel.name} by ${member.displayName}`);
-    lock(guild);
-    const connection = await botChannel.join();
-
-    const dispatcher = connection.play(audioPath, {
-      volume,
-    });
-
-    dispatcher.on("finish", () => {
-      botChannel.leave();
-      unlock(guild);
-    });
-  } catch (err) {
-    console.error(err);
-  }
-};
-
-async function main() {
-  const bot = new Client();
-  bot.on("message", handleMessage);
-
-  await bot.login(discordToken);
-
-  await bot.user.setPresence({activity: {name:  `-${commandTrigger} commands`, type: "LISTENING"}});
-
-  console.log("\x1b[36m", "Bot is ready! Waiting for commands...", "\x1b[0m");
+    manager.run(command, message, argv);
+  });
 }
 
 main();
