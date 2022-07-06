@@ -1,28 +1,25 @@
+
 {
   "compilerOptions": {
     "module": "commonjs",
-    "moduleResolution": "node",
-    "removeComments": true,
     "declaration": true,
-    "esModuleInterop": true,
+    "removeComments": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
-    "target": "es5",
+    "esModuleInterop": true,
+    "target": "es2017",
     "sourceMap": true,
     "outDir": "./dist",
     "baseUrl": "./",
     "incremental": true,
-    "lib": [
-      "ESNext"
-    ],
-  },
-  "exclude": [
-    "node_modules",
-    "test",
-    "dist",
-    "**/*spec.ts",
-    ".git"
-  ],
-  "ts-node": {
-    "files": true
+    "skipLibCheck": true,
+    "lib": ["ESNext"],
+    "paths": {
+      "@/*": ["src/*"],
+      "@lib/*": ["src/lib/*"],
+      "@config": ["src/config"],
+      "@exception/*": ["src/lib/exceptions/*"]
+    }
   }
 }
