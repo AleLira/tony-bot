@@ -1,4 +1,5 @@
 import 'dotenv/config';
+import { version, author, homepage } from '../package.json';
 import MissingEnvVarException from './lib/exceptions/MissingEnvVarException';
 
 const REQUIRED_VARS = ['DISCORD_TOKEN', 'DISCORD_BOT_OWNER_ID'];
@@ -23,7 +24,7 @@ export const autoUnlockTimeSeconds = process.env.CONFIG_AUTO_UNLOCK_TIME_SECONDS
   : 3;
 
 export const packageData = {
-  version: process.env.npm_package_version,
-  author: process.env.npm_package_author_name,
-  homepage: process.env.npm_package_homepage,
+  version,
+  author,
+  homepage,
 };

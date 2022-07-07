@@ -1,4 +1,3 @@
-import { commandTrigger } from '@config';
 import {
   AudioPlayerStatus,
   createAudioPlayer,
@@ -9,6 +8,7 @@ import commandLine from 'command-line-args';
 import { Guild, Message, VoiceChannel } from 'discord.js';
 import { Readable } from 'stream';
 
+import { commandTrigger } from '../../config';
 import AudioManager from '../AudioManager';
 import Command from '../Command';
 import InvalidAudioException from '../exceptions/InvalidAudioException';

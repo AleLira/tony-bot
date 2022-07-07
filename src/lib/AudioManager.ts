@@ -1,4 +1,3 @@
-import InvalidAudioException from '@exception/InvalidAudioException';
 import Debug from 'debug';
 import {
   createReadStream,
@@ -11,6 +10,7 @@ import { resolve } from 'path';
 import { Readable } from 'stream';
 
 import CommandManager from './CommandManager';
+import InvalidAudioException from './exceptions/InvalidAudioException';
 
 export default class AudioManager {
   private commandAliases: string[] = CommandManager.getInstance().allAliases();

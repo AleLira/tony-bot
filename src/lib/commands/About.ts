@@ -1,8 +1,7 @@
 import { Message } from 'discord.js';
 import prettyMilliseconds from 'pretty-ms';
 
-import { botName, packageData } from '@/config';
-
+import { botName, packageData } from '../../config';
 import Command from '../Command';
 
 export default class About extends Command {

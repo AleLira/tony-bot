@@ -1,7 +1,6 @@
 import { Message } from 'discord.js';
 
-import { botName, commandTrigger } from '@/config';
-
+import { botName, commandTrigger } from '../../config';
 import Command from '../Command';
 import CommandManager from '../CommandManager';
 import InvalidCommandException from '../exceptions/InvalidCommandException';

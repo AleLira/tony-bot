@@ -1,11 +1,12 @@
 import 'dotenv/config';
-import { botName, commandTrigger, discordToken } from '@config';
-import AudioManager from '@lib/AudioManager';
-import CommandManager from '@lib/CommandManager';
-import { isCommand } from '@lib/helpers';
 import Debug from 'debug';
 import { Client, Intents, Message } from 'discord.js';
 import stringArgv from 'string-argv';
+
+import { botName, commandTrigger, discordToken } from './config';
+import AudioManager from './lib/AudioManager';
+import CommandManager from './lib/CommandManager';
+import { isCommand } from './lib/helpers';
 
 const debug = Debug(`${botName}:main:`);
 
@@ -37,7 +38,6 @@ async function main(): Promise<void> {
       activities: [{ name: `-${commandTrigger} <command>`, type: 'LISTENING' }],
     });
 
-    // eslint-disable-next-line no-console
     debug(`Ready! Logged in as ${bot.user.tag}`);
   });
 

@@ -1,10 +1,10 @@
-import InvalidCommandException from '@exception/InvalidCommandException';
 import Debug from 'debug';
 import { Message } from 'discord.js';
 import { readdirSync } from 'fs';
 import { resolve } from 'path';
 
 import Command from './Command';
+import InvalidCommandException from './exceptions/InvalidCommandException';
 
 export type CommandMetadata = { name: string } & Omit<Command, 'execute'>;
 

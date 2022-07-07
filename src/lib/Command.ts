@@ -1,4 +1,3 @@
-import { botOwnerDiscordId } from '@config';
 import Debug from 'debug';
 import {
   GuildMember,
@@ -7,6 +6,8 @@ import {
   TextChannel,
   User,
 } from 'discord.js';
+
+import { botOwnerDiscordId } from '../config';
 
 type CommandArg<T> = {
   name: string;
