@@ -30,7 +30,11 @@ export default class CommandManager {
     const files = readdirSync(this.commandsPath);
 
     await Promise.all(
-      files.map(async (file: string) => {
+      files.map(async (file) => {
+        if (!file.match(/[^.d].(ts|js)$/i)) {
+          this.debug(`[WARN] File ${file} is not a JS or TS file. Ignoring...`);
+          return;
+        }
         const command = await import(resolve(this.commandsPath, file));
 
         const commandInstance: Command = new command.default();
