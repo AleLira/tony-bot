@@ -1,9 +1,14 @@
 {
   "name": "tony-bot",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "main": "index.js",
   "author": "Alexsander Lira",
   "license": "MIT",
+  "homepage": "https://github.com/AleLira/tony-bot",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AleLira/tony-bot.git"
+  },
   "scripts": {
     "start:dev": "ts-node-dev --respawn -r tsconfig-paths/register src/app.ts",
     "start": "node ./dist/app",
@@ -39,6 +44,7 @@
     "discord.js": "^13.7.0",
     "dotenv": "^16.0.1",
     "ffmpeg-static": "^5.0.0",
+    "pretty-ms": "7.0.1",
     "sodium-native": "^3.3.0",
     "string-argv": "^0.3.1",
     "tsconfig-paths": "^4.0.0"

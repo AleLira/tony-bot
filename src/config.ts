@@ -21,3 +21,9 @@ export const botName = process.env.APP_BOT_NAME || 'TonyBot';
 export const autoUnlockTimeSeconds = process.env.CONFIG_AUTO_UNLOCK_TIME_SECONDS
   ? Number(process.env.CONFIG_AUTO_UNLOCK_TIME_SECONDS)
   : 3;
+
+export const packageData = {
+  version: process.env.npm_package_version,
+  author: process.env.npm_package_author_name,
+  homepage: process.env.npm_package_homepage,
+};
