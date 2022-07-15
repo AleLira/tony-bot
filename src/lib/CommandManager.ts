@@ -31,7 +31,7 @@ export default class CommandManager {
 
     await Promise.all(
       files.map(async (file) => {
-        if (!file.match(/[^.d].(ts|js)$/i)) {
+        if (!file.match(/(?<!\.d)\.(t|j)s$/i)) {
           this.debug(`[WARN] File ${file} is not a JS or TS file. Ignoring...`);
           return;
         }

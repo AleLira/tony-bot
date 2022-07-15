@@ -1,6 +1,6 @@
 {
   "name": "tony-bot",
-  "version": "2.0.3",
+  "version": "2.0.4",
   "main": "index.js",
   "author": "Alexsander Lira",
   "license": "MIT",
@@ -11,7 +11,7 @@
   },
   "scripts": {
     "start:dev": "ts-node-dev --respawn -r tsconfig-paths/register src/app.ts",
-    "start": "node ./dist/app",
+    "start": "node ./dist/src/app",
     "build": "yarn lint && rm -rf dist && tsc",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\"",
     "lint:fix": "yarn lint --fix"
