@@ -1,5 +1,4 @@
 import { Message } from 'discord.js';
-import prettyMilliseconds from 'pretty-ms';
 
 import { botName, packageData } from '../../config';
 import Command from '../Command';
@@ -9,6 +8,8 @@ export default class About extends Command {
   public readonly description = 'Shows bot Info';
 
   public async execute(message: Message): Promise<void> {
+    const { default: prettyMilliseconds } = await import('pretty-ms');
+
     const responseMessage = this.createBaseResponseMessage(
       message.author,
       botName,
@@ -16,10 +17,13 @@ export default class About extends Command {
 
     const uptime = prettyMilliseconds(message.client.uptime);
 
-    responseMessage.addField('Version', packageData.version);
-    responseMessage.addField('Author', packageData.author);
-    responseMessage.addField('Repository', packageData.homepage);
-    responseMessage.addField('Uptime', uptime);
+    responseMessage.addFields({ name: 'Version', value: packageData.version });
+    responseMessage.addFields({ name: 'Author', value: packageData.author });
+    responseMessage.addFields({
+      name: 'Repository',
+      value: packageData.homepage,
+    });
+    responseMessage.addFields({ name: 'Uptime', value: uptime });
 
     message.reply({ content: null, embeds: [responseMessage] });
     return;

@@ -5,7 +5,7 @@ import {
   joinVoiceChannel,
 } from '@discordjs/voice';
 import commandLine from 'command-line-args';
-import { Guild, Message, VoiceChannel } from 'discord.js';
+import { ChannelType, Guild, Message, VoiceChannel } from 'discord.js';
 import { Readable } from 'stream';
 
 import { commandTrigger } from '../../config';
@@ -85,7 +85,7 @@ export default class Play extends Command {
     if (channelArg) {
       const channelSearch = guild.channels.cache.find(
         ({ name, type }) =>
-          name.toLowerCase() === channelArg && type === 'GUILD_VOICE',
+          name.toLowerCase() === channelArg && type === ChannelType.GuildVoice,
       );
 
       if (!channelSearch) {
