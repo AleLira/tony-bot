@@ -2,7 +2,7 @@ import Debug from 'debug';
 import {
   GuildMember,
   Message,
-  MessageEmbed,
+  EmbedBuilder,
   TextChannel,
   User,
 } from 'discord.js';
@@ -34,7 +34,7 @@ export default abstract class Command {
     const messageAuthorIsOwner = member.user.id === botOwnerDiscordId;
     const messageAuthorIsAdmin = member
       .permissionsIn(channel)
-      .has('ADMINISTRATOR');
+      .has('Administrator');
 
     return messageAuthorIsOwner || messageAuthorIsAdmin;
   }
@@ -43,11 +43,11 @@ export default abstract class Command {
     user: User,
     title?: string,
     description?: string,
-  ): MessageEmbed {
-    const message = new MessageEmbed()
+  ): EmbedBuilder {
+    const message = new EmbedBuilder()
       .setFooter({
         text: `Requested by: ${user.tag}`,
-        iconURL: user.displayAvatarURL({ dynamic: true }),
+        iconURL: user.displayAvatarURL(),
       })
       .setTimestamp();
 

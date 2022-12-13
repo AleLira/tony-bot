@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { Message, MessageAttachment, TextChannel } from 'discord.js';
+import { Message, Attachment, TextChannel } from 'discord.js';
 
 import AudioManager from '../AudioManager';
 import Command from '../Command';
@@ -30,7 +30,7 @@ export default class Upload extends Command {
   private readonly audioManager = AudioManager.getInstance();
   private readonly commandManager = CommandManager.getInstance();
 
-  private async downloadFile(attachment: MessageAttachment): Promise<Buffer> {
+  private async downloadFile(attachment: Attachment): Promise<Buffer> {
     const { headers, data } = await axios.get<Buffer>(attachment.url, {
       responseType: 'arraybuffer',
     });
@@ -43,7 +43,7 @@ export default class Upload extends Command {
   }
 
   private parseAudioName(
-    attachment: MessageAttachment,
+    attachment: Attachment,
     nameArg: string,
   ): AudioMetadata {
     const attachmentNameArr = attachment.name.split('.');

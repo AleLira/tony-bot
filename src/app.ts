@@ -1,6 +1,6 @@
 import 'dotenv/config';
 import Debug from 'debug';
-import { Client, Intents, Message } from 'discord.js';
+import { ActivityType, Client, IntentsBitField, Message } from 'discord.js';
 import stringArgv from 'string-argv';
 
 import { botName, commandTrigger, discordToken } from './config';
@@ -12,11 +12,12 @@ const debug = Debug(`${botName}:main:`);
 
 async function main(): Promise<void> {
   debug('Starting Bot!');
-  const intents = new Intents();
+  const intents = new IntentsBitField();
   intents.add(
-    Intents.FLAGS.GUILDS,
-    Intents.FLAGS.GUILD_VOICE_STATES,
-    Intents.FLAGS.GUILD_MESSAGES,
+    IntentsBitField.Flags.Guilds,
+    IntentsBitField.Flags.GuildVoiceStates,
+    IntentsBitField.Flags.GuildMessages,
+    IntentsBitField.Flags.MessageContent,
   );
   const bot = new Client({
     intents: intents,
@@ -35,7 +36,9 @@ async function main(): Promise<void> {
 
   bot.on('ready', () => {
     bot.user?.setPresence({
-      activities: [{ name: `-${commandTrigger} <command>`, type: 'LISTENING' }],
+      activities: [
+        { name: `-${commandTrigger} <command>`, type: ActivityType.Listening },
+      ],
     });
 
     debug(`Ready! Logged in as ${bot.user.tag}`);

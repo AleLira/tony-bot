@@ -23,10 +23,10 @@ export default class Help extends Command {
       responseDescription,
     );
 
-    responseMessage.addField(
-      'Available Commands',
-      commands.map((command) => `\`${command}\``).join(' '),
-    );
+    responseMessage.addFields({
+      name: 'Available Commands',
+      value: commands.map((command) => `\`${command}\``).join(' '),
+    });
 
     message.reply({ embeds: [responseMessage] });
   }
@@ -43,21 +43,21 @@ export default class Help extends Command {
         commandMetadata.description,
       );
 
-      responseMessage.addField(
-        'Aliases',
-        commandMetadata.aliases
+      responseMessage.addFields({
+        name: 'Aliases',
+        value: commandMetadata.aliases
           .map((alias) => (alias ? `\`${alias}\`` : ''))
           .join(' '),
-      );
+      });
 
       const commandUsageArr = [
         `-${commandTrigger} ${commandMetadata.aliases[0]}`,
       ];
 
       if (commandMetadata.acceptedArgs?.length) {
-        responseMessage.addField(
-          'Accepted Arguments',
-          commandMetadata.acceptedArgs
+        responseMessage.addFields({
+          name: 'Accepted Arguments',
+          value: commandMetadata.acceptedArgs
             .map((arg) => {
               const fragments = [
                 '`' + arg.name + '`',
@@ -77,10 +77,13 @@ export default class Help extends Command {
               return fragments.join('');
             })
             .join('\n'),
-        );
+        });
       }
 
-      responseMessage.addField('Usage', commandUsageArr.join(' '));
+      responseMessage.addFields({
+        name: 'Usage',
+        value: commandUsageArr.join(' '),
+      });
 
       message.reply({ embeds: [responseMessage] });
 
