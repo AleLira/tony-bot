@@ -1,5 +1,5 @@
 import 'dotenv/config';
-import { version, author, homepage } from '../package.json';
+import { version, author, homepage, contributors } from '../package.json';
 import MissingEnvVarException from './lib/exceptions/MissingEnvVarException';
 
 const REQUIRED_VARS = ['DISCORD_TOKEN', 'DISCORD_BOT_OWNER_ID'];
@@ -10,6 +10,18 @@ REQUIRED_VARS.forEach((envVar) => {
     throw new MissingEnvVarException(envVar);
   }
 });
+
+export type ContributorInfo = {
+  name: string;
+  url: string;
+};
+
+export type PackageData = {
+  version: string;
+  author: ContributorInfo | string;
+  contributors?: ContributorInfo[] | string[];
+  homepage: string;
+};
 
 export const commandTrigger = process.env.CONFIG_TRIGGER_CHAR || 't';
 
@@ -23,8 +35,9 @@ export const autoUnlockTimeSeconds = process.env.CONFIG_AUTO_UNLOCK_TIME_SECONDS
   ? Number(process.env.CONFIG_AUTO_UNLOCK_TIME_SECONDS)
   : 3;
 
-export const packageData = {
+export const packageData: PackageData = {
   version,
   author,
   homepage,
+  contributors,
 };

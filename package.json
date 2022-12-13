@@ -1,8 +1,12 @@
 {
   "name": "tony-bot",
-  "version": "2.0.5",
+  "version": "2.0.6",
   "main": "src/app.ts",
-  "author": "Alexsander Lira",
+  "author": {
+    "name" : "Alexsander Lira",
+    "email" : "hello@alexsanderlira.dev",
+    "url" : "https://github.com/AleLira"
+  },
   "contributors": [
     { 
       "name": "Agustinho Neto",
