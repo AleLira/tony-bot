@@ -1,8 +1,8 @@
 import { Message } from 'discord.js';
-import { dynamicImport } from 'lib/helpers';
 
 import { botName, ContributorInfo, packageData } from '../../config';
 import Command from '../Command';
+import { dynamicImport } from '../helpers';
 
 export default class About extends Command {
   public readonly aliases = ['about'];
