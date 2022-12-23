@@ -2,3 +2,8 @@ node_modules/
 dist/
 .env
 .DS_Store
+
+audios/*
+audios/originals/*
+!audios/originals/
+!audios/originals/.gitkeep
